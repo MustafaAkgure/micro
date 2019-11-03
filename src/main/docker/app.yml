@@ -1,0 +1,20 @@
+version: '2'
+services:
+  micro-app:
+    image: micro
+    environment:
+      - _JAVA_OPTIONS=-Xmx512m -Xms256m
+      - SPRING_PROFILES_ACTIVE=prod,swagger
+      - MANAGEMENT_METRICS_EXPORT_PROMETHEUS_ENABLED=true
+      - SPRING_DATASOURCE_URL=jdbc:mysql://micro-mysql:3306/micro?useUnicode=true&characterEncoding=utf8&useSSL=false
+      - JHIPSTER_SLEEP=30 # gives time for other services to boot before the application
+      - SPRING_DATA_JEST_URI=http://micro-elasticsearch:9200
+      - SPRING_ELASTICSEARCH_REST_URIS=http://micro-elasticsearch:9200
+  micro-mysql:
+    extends:
+      file: mysql.yml
+      service: micro-mysql
+  micro-elasticsearch:
+    extends:
+      file: elasticsearch.yml
+      service: micro-elasticsearch
